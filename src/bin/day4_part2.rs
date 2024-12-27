@@ -21,7 +21,7 @@ fn main() {
 }
 
 fn read_file() -> Vec<Vec<char>> {
-    let mut file = File::open("input.txt").unwrap();
+    let mut file = File::open("inputs/day4.txt").unwrap();
     let mut input = String::new();
 
     let mut input_vec = Vec::new();

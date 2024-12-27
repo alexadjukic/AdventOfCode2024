@@ -18,7 +18,7 @@ fn main() {
     //     vec![1, 3, 6, 7, 9],
     // ];
 
-    let mut file = File::open("input.txt").unwrap();
+    let mut file = File::open("inputs/day2.txt").unwrap();
 
     let mut input = String::new();
     if let Ok(_) = file.read_to_string(&mut input) {

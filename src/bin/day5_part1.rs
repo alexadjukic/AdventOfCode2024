@@ -1,4 +1,8 @@
-use std::{collections::HashMap, fs::File, io::Read};
+use std::{
+    collections::{HashMap, VecDeque},
+    fs::File,
+    io::Read,
+};
 
 fn main() {
     //     let mut input = String::from(
@@ -32,36 +36,35 @@ fn main() {
     // 97,13,75,29,47",
     //     );
 
-    let mut file = File::open("input.txt").unwrap();
+    let mut file = File::open("inputs/day5.txt").unwrap();
     let mut input = String::new();
     if let Ok(_) = file.read_to_string(&mut input) {
-        let (rules, mut updates) = parse_input(input);
+        let (rules, updates) = parse_input(input);
 
-        let correct_updates = reorder_and_sum(&rules, &mut updates);
-
+        let correct_updates = sum_correct_updates(&rules, &updates);
         println!("Solution: {correct_updates:?}");
     }
 }
 
-fn reorder_and_sum(rules: &HashMap<i32, Vec<i32>>, updates: &mut Vec<Vec<i32>>) -> i32 {
+fn sum_correct_updates(rules: &HashMap<i32, Vec<i32>>, updates: &Vec<Vec<i32>>) -> i32 {
     let mut sum = 0;
 
-    for update in updates.iter_mut() {
-        let mut corrected = false;
-        for i in 0..update.len() {
-            for j in i..update.len() {
-                if let Some(rule) = rules.get(&update[i]) {
-                    if rule.contains(&update[j]) {
-                        if i > j {}
-                        let temp = update[i];
-                        update[i] = update[j];
-                        update[j] = temp;
-                        corrected = true;
+    for update in updates.iter() {
+        let mut violators: VecDeque<i32> = update.clone().into();
+        violators.pop_front();
+        let mut violated = false;
+
+        for item in update.iter() {
+            if let Some(rule) = rules.get(item) {
+                for violator in violators.iter() {
+                    if rule.contains(violator) {
+                        violated = true;
                     }
                 }
             }
+            violators.pop_front();
         }
-        if corrected {
+        if !violated {
             sum += update.get(update.len() / 2).unwrap();
         }
     }

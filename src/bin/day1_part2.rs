@@ -4,7 +4,7 @@ fn main() {
     let mut list = Vec::new();
     let mut map: HashMap<i32, i32> = HashMap::new();
 
-    let mut f = File::open("input.txt").unwrap();
+    let mut f = File::open("inputs/day1.txt").unwrap();
     let mut input = String::new();
     let info = f.read_to_string(&mut input);
     if let Ok(_) = info {
